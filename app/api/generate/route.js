@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 
-export async function POST(req,res){
+export async function POST(req){
     const model = genAI.getGenerativeModel({model:"gemini-pro"})
 
     try {
