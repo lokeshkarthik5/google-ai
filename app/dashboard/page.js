@@ -1,37 +1,59 @@
-'use client';
+'use client'
+
+import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 
-const DashBoard = () => {
-  
-  const [text, setText] = useState('');
-  const [messages, setMessages] = useState();
+
+export default function GeminiPrompt() {
+  const [message, setMessage] = useState('');
+  const [answer, setAnswer] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch('/api/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ text }),
-    });
-    const data = await res.json();
-    setMessages(data.text);
-  }
-  
-  return(
 
+    try {
+
+      setLoading(true);
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setAnswer(data.answer);
+      } else {
+        setAnswer(`Error: ${data.error}`);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('Error:', error);
+      setAnswer('An error occurred');
+    }
+  };
+
+  const handleChange = (e)=>{
+    e.preventDefault();
+    setMessage(e.target.value)
+  }
+
+  return (
     <div>
       <form onSubmit={handleSubmit}>
-        <input type="text" className='text-black' value={text} onChange={(e) => setText(e.target.value)} />
-        <button type="submit">Submit</button>
+        <input
+          type='text'
+          onChange={handleChange}
+          placeholder="Enter your prompt here..."
+        />
+          
+        <Button type="submit" disabled={loading} >Submit</Button>
       </form>
-      <div>
-        {messages}
-      </div>
+      {answer && <div className='text-black'>{answer}</div>}
     </div>
-
-  )
+  );
 }
-
-export default DashBoard;
