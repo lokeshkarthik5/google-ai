@@ -43,12 +43,13 @@ export default function GeminiPrompt() {
   }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
+    <div className='flex flex-col'>
+      <form onSubmit={handleSubmit} className='flex flex-col'>
+        <textarea
           type='text'
           onChange={handleChange}
           placeholder="Enter your prompt here..."
+          rows={10}
         />
           
         <Button type="submit" disabled={loading} >Submit</Button>

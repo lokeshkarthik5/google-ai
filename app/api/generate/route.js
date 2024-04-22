@@ -16,7 +16,7 @@ export async function POST(request){
 
     const model = genAI.getGenerativeModel({model:"gemini-pro"})
     
-    const prompt = message + "is the competitor price. Suggest competitive price"
+    const prompt = message + "Summarize the legal document and provide insights, risks, rewards and suggest better terms too"
     
     const result = await model.generateContent(prompt);
     const response = await result.response;
