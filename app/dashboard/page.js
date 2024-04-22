@@ -1,45 +1,36 @@
-'use client'
-import React,{useState} from 'react';
-
-const DashboardPage = () => {
-
-    const [prompt, setPrompt] = useState('')
-    const [final,setFinal] = useState('')
-
-
-    const handleChange = (e) => {
-        setPrompt(e.target.value)
-    }
-
-    const handleSubmit = async()=>{
-
-        const response = await fetch('/api/generate',{
-            method:'POST',
-            body:JSON.stringify({prompt}),
-            headers:{
-                'Content-Type':'application/json'
-            }
-            
-        })
-
-        const data = await response.json()
-        setFinal(data)
-    }
-
-
+'use client';
+ 
+import { useCompletion } from 'ai/react';
+ 
+export default function Completion() {
+  const {
+    completion,
+    input,
+    stop,
+    isLoading,
+    handleInputChange,
+    handleSubmit,
+  } = useCompletion();
+ 
   return (
-    <div className='text-x'>
-      <h1>Dashboard</h1>
+    <div className="mx-auto w-full max-w-md py-24 flex flex-col stretch">
       <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Enter prompt" onChange={handleChange} className='text-black' />
-        <button type='submit'>Submit</button>
+        <label>
+          Say something...
+          <input
+            className="fixed text-black w-full max-w-md bottom-0 border border-gray-300 rounded mb-8 shadow-xl p-2"
+            value={input}
+            onChange={handleInputChange}
+          />
+        </label>
+        <output className='text-white'>Completion result: {completion}</output>
+        <button type="button" onClick={stop}>
+          Stop
+        </button>
+        <button disabled={isLoading}  type="submit">
+          Send
+        </button>
       </form>
-        <div className='text-zinc'>
-            {final}
-        </div>
     </div>
   );
-}  
-            
-
-export default DashboardPage;
+}

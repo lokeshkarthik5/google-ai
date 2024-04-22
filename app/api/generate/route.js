@@ -1,22 +1,25 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { NextResponse } from "next/server";
-
-const genAI = new GoogleGenerativeAI(process.env.API_KEY);
-
-export async function POST(req){
-    const model = genAI.getGenerativeModel({model:"gemini-pro"})
-
-    try {
-        
-        const prompt = req.body.json()
-
-        const result = await model.generate(prompt)
-        const response = await result.response
-        const text = response.text()
-
-        return NextResponse.json({text})
-
-    } catch (error) {
-        return NextResponse.json(error)
-    }
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAIStream, StreamingTextResponse } from 'ai';
+ 
+const genAI = new GoogleGenerativeAI(process.env.API_KEY || '');
+ 
+// IMPORTANT! Set the runtime to edge
+export const runtime = 'edge';
+ 
+export async function POST(req) {
+  // Extract the `prompt` from the body of the request
+  const { prompt } = await req.json();
+ 
+  // Ask Google Generative AI for a streaming completion given the prompt
+  const response = await genAI
+    .getGenerativeModel({ model: 'gemini-pro' })
+    .generateContentStream({
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+    });
+ 
+  // Convert the response into a friendly text-stream
+  const stream = GoogleGenerativeAIStream(response);
+ 
+  // Respond with the stream
+  return new StreamingTextResponse(stream);
 }
