@@ -1,35 +1,27 @@
 'use client';
  
-import { useCompletion } from 'ai/react';
+import { useChat } from 'ai/react';
  
-export default function Completion() {
-  const {
-    completion,
-    input,
-    stop,
-    isLoading,
-    handleInputChange,
-    handleSubmit,
-  } = useCompletion();
+export default function Chat() {
+  const { messages, input, handleInputChange, handleSubmit } = useChat();
  
   return (
-    <div className="mx-auto w-full max-w-md py-24 flex flex-col stretch">
+    <div>
+      {messages.map(m => (
+        <div key={m.id}>
+          {m.role === 'user' ? 'User: ' : 'AI: '}
+          {m.content}
+        </div>
+      ))}
+ 
       <form onSubmit={handleSubmit}>
-        <label>
-          Say something...
-          <input
-            className="fixed text-black w-full max-w-md bottom-0 border border-gray-300 rounded mb-8 shadow-xl p-2"
-            value={input}
-            onChange={handleInputChange}
-          />
-        </label>
-        <output className='text-white'>Completion result: {completion}</output>
-        <button type="button" onClick={stop}>
-          Stop
-        </button>
-        <button disabled={isLoading}  type="submit">
-          Send
-        </button>
+        <input
+          value={input}
+          placeholder="Say something..."
+          onChange={handleInputChange}
+          className='text-black'
+        />
+        <button type="submit">Send</button>
       </form>
     </div>
   );
