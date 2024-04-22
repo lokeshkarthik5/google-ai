@@ -1,28 +1,37 @@
 'use client';
- 
-import { useChat } from 'ai/react';
- 
-export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
- 
-  return (
+import { useState } from 'react';
+
+const DashBoard = () => {
+  
+  const [text, setText] = useState('');
+  const [messages, setMessages] = useState();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text }),
+    });
+    const data = await res.json();
+    setMessages(data.text);
+  }
+  
+  return(
+
     <div>
-      {messages.map(m => (
-        <div key={m.id}>
-          {m.role === 'user' ? 'User: ' : 'AI: '}
-          {m.content}
-        </div>
-      ))}
- 
       <form onSubmit={handleSubmit}>
-        <input
-          value={input}
-          placeholder="Say something..."
-          onChange={handleInputChange}
-          className='text-black'
-        />
-        <button type="submit">Send</button>
+        <input type="text" className='text-black' value={text} onChange={(e) => setText(e.target.value)} />
+        <button type="submit">Submit</button>
       </form>
+      <div>
+        {messages}
+      </div>
     </div>
-  );
+
+  )
 }
+
+export default DashBoard;
