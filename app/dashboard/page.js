@@ -55,8 +55,8 @@ export default function GeminiPrompt() {
   };
 
   return (
-    <div className='flex flex-col'>
-      <form onSubmit={handleSubmit} className='flex flex-col'>
+    <div className='flex justify-center items-center w-full h-screen'>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-y-10 '>
 
         <input type="file" accept="application/pdf" onChange={handleFileUpload} />
           
