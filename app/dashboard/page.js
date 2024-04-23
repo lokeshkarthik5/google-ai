@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button';
+import pdfToText from "react-pdftotext";
 import { useState } from 'react';
 
 
@@ -8,6 +9,7 @@ export default function GeminiPrompt() {
   const [message, setMessage] = useState('');
   const [answer, setAnswer] = useState('');
   const [loading, setLoading] = useState(false);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,20 +39,26 @@ export default function GeminiPrompt() {
     }
   };
 
-  const handleChange = (e)=>{
-    e.preventDefault();
-    setMessage(e.target.value)
-  }
+
+
+
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    pdfToText(file)
+        .then((text) => {
+            setMessage(text);
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+  };
 
   return (
     <div className='flex flex-col'>
       <form onSubmit={handleSubmit} className='flex flex-col'>
-        <textarea
-          type='text'
-          onChange={handleChange}
-          placeholder="Enter your prompt here..."
-          rows={10}
-        />
+
+        <input type="file" accept="application/pdf" onChange={handleFileUpload} />
           
         <Button type="submit" disabled={loading} >Submit</Button>
       </form>
