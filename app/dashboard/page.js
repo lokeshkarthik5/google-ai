@@ -3,11 +3,25 @@
 import { Button } from '@/components/ui/button';
 import pdfToText from "react-pdftotext";
 import { useState } from 'react';
+import { Montserrat } from "next/font/google"
+import { cn } from '@/lib/utils';
+
+const monstserrat = Montserrat({
+  weight: "600",
+  subsets:["cyrillic"]
+})
+
+const extra = Montserrat({
+  weight: "900",
+  style:['normal'],
+  subsets:["cyrillic"]
+})
 
 
 export default function GeminiPrompt() {
   const [message, setMessage] = useState('');
   const [answer, setAnswer] = useState('');
+  const [paragraph, setParagraph] = useState('');
   const [loading, setLoading] = useState(false);
   
 
@@ -55,14 +69,18 @@ export default function GeminiPrompt() {
   };
 
   return (
-    <div className='flex justify-center items-center w-full h-screen'>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-y-10 '>
-
+    <div className='flex flex-col items-center'>
+      <div className={cn("mb-10 mt-10 text-3xl font-extrabold",extra.className)}>Legal Contract Summarizer</div>
+      <form onSubmit={handleSubmit} className='gap-y-10 flex flex-col '>
         <input type="file" accept="application/pdf" onChange={handleFileUpload} />
-          
         <Button type="submit" disabled={loading} >Submit</Button>
       </form>
-      {answer && <div className='text-black'>{answer}</div>}
+      {answer && <div className={cn('text-black mt-10 w-[80%] font-bold',monstserrat.className)}>
+      
+      <div dangerouslySetInnerHTML={{ __html: answer }} />
+      </div>}
     </div>
   );
 }
+      
+          
