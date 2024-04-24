@@ -5,6 +5,7 @@ import pdfToText from "react-pdftotext";
 import { useState } from 'react';
 import { Montserrat } from "next/font/google"
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 const monstserrat = Montserrat({
   weight: "600",
@@ -70,14 +71,15 @@ export default function GeminiPrompt() {
 
   return (
     <div className='flex flex-col items-center'>
-      <div className={cn("mb-10 mt-10 text-3xl font-extrabold",extra.className)}>Legal Contract Summarizer</div>
+      <Button className="ml-10 mr-auto mt-5"><Link href='/'>Home</Link></Button>
+      <div className={cn("mb-10 mt-10 text-xl font-extrabold",extra.className)}>Upload PDF file and Ai will do the rest</div>
       <form onSubmit={handleSubmit} className='gap-y-10 flex flex-col '>
         <input type="file" accept="application/pdf" onChange={handleFileUpload} />
         <Button type="submit" disabled={loading} >Submit</Button>
       </form>
       {answer && <div className={cn('text-black mt-10 w-[80%] font-bold',monstserrat.className)}>
       
-      <div dangerouslySetInnerHTML={{ __html: answer }} />
+      <div className='bg-zinc-200' dangerouslySetInnerHTML={{ __html: answer }} />
       </div>}
     </div>
   );
