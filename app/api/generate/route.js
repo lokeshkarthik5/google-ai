@@ -16,7 +16,7 @@ export async function POST(request){
 
     const model = genAI.getGenerativeModel({model:"gemini-pro"})
     
-    const prompt = message + "Summarize the text and provide insights, risks, legality, capacity, contract period, key terms, termination and renewal terms, default terms, important dates and deadlines and suggest better terms in heading and a paragraph form."
+    const prompt = message + "Summarize the text and provide insights, risks, legality, capacity, contract period, key terms, termination and renewal terms, default terms, important dates and deadlines and suggest better terms in heading and a paragraph form. Give all of the needed details"
     
     const result = await model.generateContent(prompt);
     const response = await result.response;

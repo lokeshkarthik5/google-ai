@@ -79,7 +79,7 @@ export default function GeminiPrompt() {
       </form>
       {answer && <div className={cn('text-black mt-10 w-[80%] font-bold',monstserrat.className)}>
       
-      <div className='bg-zinc-200' dangerouslySetInnerHTML={{ __html: answer }} />
+      <div className='bg-zinc-200 p-4' dangerouslySetInnerHTML={{ __html: answer }} />
       </div>}
     </div>
   );
