@@ -23,10 +23,11 @@ export async function POST(request){
     const text = response.text();
 
     let formattedText = text.replace(/\n\n/g, '</p><p>');
-    formattedText = text.replace(/\n\n/g, '<br> ');
+    formattedText = text.replace(/\n\n/g, '<br></br> ');
     formattedText.replace(/\n/g, '<h2>');
     formattedText = text.replace(/\*\*/g, ':');
-    formattedText = text.replace(/\*/g, '');
+    formattedText = text.replace(/\#\#/g, ':');
+    formattedText = text.replace(/\*/g, '<br>');
     formattedText = formattedText.replace('<h2>', '<h2>', 1);
     return NextResponse.json({ answer: formattedText})
 

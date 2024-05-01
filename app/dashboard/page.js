@@ -21,7 +21,7 @@ const extra = Montserrat({
 
 export default function GeminiPrompt() {
   const [message, setMessage] = useState('');
-  const [answer, setAnswer] = useState('');
+  const [answer, setAnswer] = useState([]);
   const [paragraph, setParagraph] = useState('');
   const [loading, setLoading] = useState(false);
   
@@ -43,7 +43,7 @@ export default function GeminiPrompt() {
       const data = await response.json();
 
       if (response.ok) {
-        setAnswer(data.answer);
+        setAnswer([data.answer]);
       } else {
         setAnswer(`Error: ${data.error}`);
       }
@@ -84,5 +84,7 @@ export default function GeminiPrompt() {
     </div>
   );
 }
-      
+
+
+//<
           
